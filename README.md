@@ -10,7 +10,7 @@ The goal of this project is to provide a streamlined, efficient, and high-qualit
 
 ## Scripts
 
-### `text_to_pretty_docx.py`
+### `markdown_to_formatted_docx.py`
 
 This script converts a Markdown file to a formatted DOCX file and then converts the DOCX file to a PDF. It uses the following modules:
 - `markdown`: For converting Markdown to HTML.
@@ -38,13 +38,13 @@ This script converts a Markdown file to a formatted DOCX file and then converts 
        - Download from [MikTeX website](https://miktex.org/download).
 
 2. **Run the Script**:
-   - Execute the script to select a Markdown file and save the DOCX and PDF files:
+   - Execute the script to select a Markdown file, JSON configuration file, and save the DOCX and PDF files:
      ```bash
-     python text_to_pretty_docx.py
+     python markdown_to_formatted_docx.py
      ```
 
 3. **Functionality**:
-   - The script will open a file dialog to select a Markdown file.
+   - The script will open file dialogs to select a Markdown file and a JSON formatting configuration file.
    - It will then convert the Markdown content to a formatted DOCX file.
    - Finally, it will convert the DOCX file to a PDF file using the `pdflatex` engine for high-quality output.
 
