@@ -3,13 +3,12 @@ from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from tkinter import Tk, filedialog
+from bs4 import BeautifulSoup
 
 def markdown_to_html(markdown_text):
     return markdown.markdown(markdown_text)
 
 def html_to_docx(html, docx_path):
-    from bs4 import BeautifulSoup
-
     document = Document()
     soup = BeautifulSoup(html, 'html.parser')
 
