@@ -1,8 +1,10 @@
+import os
 import markdown
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from tkinter import Tk, filedialog
+import pypandoc
 from bs4 import BeautifulSoup
 
 def markdown_to_html(markdown_text):
@@ -53,16 +55,23 @@ def html_to_docx(html, docx_path):
 
     document.save(docx_path)
 
+def docx_to_pdf(docx_path, pdf_path):
+    output = pypandoc.convert_file(docx_path, 'pdf', outputfile=pdf_path)
+    assert output == "", "Conversion error occurred"
+    print(f"PDF file saved to {pdf_path}")
+
 def select_file(title, filetypes):
     root = Tk()
     root.withdraw()  # Hide the root window
-    file_path = filedialog.askopenfilename(title=title, filetypes=filetypes)
+    initial_dir = os.path.dirname(os.path.abspath(__file__))  # Set default folder to script's location
+    file_path = filedialog.askopenfilename(title=title, initialdir=initial_dir, filetypes=filetypes)
     return file_path
 
 def save_file():
     root = Tk()
     root.withdraw()  # Hide the root window
-    file_path = filedialog.asksaveasfilename(title="Save DOCX file", defaultextension=".docx", filetypes=[("Word files", "*.docx")])
+    initial_dir = os.path.dirname(os.path.abspath(__file__))  # Set default folder to script's location
+    file_path = filedialog.asksaveasfilename(title="Save DOCX file", initialdir=initial_dir, defaultextension=".docx", filetypes=[("Word files", "*.docx")])
     return file_path
 
 # Main script
@@ -75,6 +84,8 @@ if markdown_path:
     if docx_path:
         html_to_docx(html_content, docx_path)
         print(f"DOCX file saved to {docx_path}")
+        pdf_path = os.path.splitext(docx_path)[0] + '.pdf'
+        docx_to_pdf(docx_path, pdf_path)
     else:
         print("Save operation cancelled.")
 else:
