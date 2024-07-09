@@ -1,0 +1,25 @@
+{
+    "title": {
+        "font_size": 18,
+        "bold": true,
+        "underline": true
+    },
+    "heading1": {
+        "font_size": 16,
+        "bold": true
+    },
+    "heading2": {
+        "font_size": 14,
+        "italic": true
+    },
+    "paragraph": {
+        "font_size": 12,
+        "space_after": 10
+    },
+    "contact_info": {
+        "alignment": "center",
+        "font_size": 12,
+        "bold": true,
+        "italic": true
+    }
+}

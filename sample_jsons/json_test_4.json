@@ -1,0 +1,29 @@
+{
+    "title": {
+        "font_size": 16,
+        "bold": true,
+        "color": "000000"
+    },
+    "heading1": {
+        "font_size": 14,
+        "bold": true,
+        "underline": true,
+        "color": "333333"
+    },
+    "heading2": {
+        "font_size": 12,
+        "bold": true,
+        "color": "444444"
+    },
+    "paragraph": {
+        "font_size": 11,
+        "space_after": 12,
+        "color": "555555"
+    },
+    "contact_info": {
+        "alignment": "center",
+        "font_size": 12,
+        "bold": true,
+        "color": "222222"
+    }
+}

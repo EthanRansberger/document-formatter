@@ -1,0 +1,30 @@
+{
+    "title": {
+        "font_size": 22,
+        "bold": true,
+        "italic": true,
+        "color": "FF5733"
+    },
+    "heading1": {
+        "font_size": 18,
+        "bold": true,
+        "italic": true,
+        "color": "C70039"
+    },
+    "heading2": {
+        "font_size": 16,
+        "italic": true,
+        "color": "900C3F"
+    },
+    "paragraph": {
+        "font_size": 12,
+        "space_after": 8,
+        "color": "581845"
+    },
+    "contact_info": {
+        "alignment": "center",
+        "font_size": 12,
+        "italic": true,
+        "color": "DAF7A6"
+    }
+}
