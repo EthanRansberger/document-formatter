@@ -1,0 +1,37 @@
+{
+    "title": {
+        "font_size": 20,
+        "bold": true,
+        "color": "1F497D"
+    },
+    "heading1": {
+        "font_size": 16,
+        "bold": true,
+        "underline": true,
+        "color": "4F81BD"
+    },
+    "heading2": {
+        "font_size": 14,
+        "italic": true,
+        "color": "4BACC6"
+    },
+    "paragraph": {
+        "font_size": 12,
+        "space_after": 8,
+        "color": "000000"
+    },
+    "contact_info": {
+        "alignment": "center",
+        "font_size": 12,
+        "bold": true,
+        "color": "7F7F7F"
+    },
+    "list_bullet": {
+        "font_size": 12,
+        "color": "000000"
+    },
+    "list_number": {
+        "font_size": 12,
+        "color": "000000"
+    }
+}
