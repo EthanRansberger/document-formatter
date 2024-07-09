@@ -56,7 +56,7 @@ def html_to_docx(html, docx_path):
     document.save(docx_path)
 
 def docx_to_pdf(docx_path, pdf_path):
-    output = pypandoc.convert_file(docx_path, 'pdf', outputfile=pdf_path)
+    output = pypandoc.convert_file(docx_path, 'pdf', outputfile=pdf_path, extra_args=['--pdf-engine=pdflatex'])
     assert output == "", "Conversion error occurred"
     print(f"PDF file saved to {pdf_path}")
 

@@ -4,6 +4,10 @@
 
 This repository contains scripts for converting Markdown files to formatted DOCX files and subsequently converting them to PDF. The scripts are designed to ensure ATS (Applicant Tracking System) friendly formatting, making it easier for job applications.
 
+## Mission
+
+The goal of this project is to provide a streamlined, efficient, and high-quality solution for converting Markdown content into professional documents. The focus is on maintaining ATS compatibility to enhance the chances of your resume or documents passing through automated recruitment systems like Taleo.
+
 ## Scripts
 
 ### `text_to_pretty_docx.py`
@@ -21,6 +25,17 @@ This script converts a Markdown file to a formatted DOCX file and then converts 
      ```bash
      pip install markdown python-docx beautifulsoup4 pypandoc
      ```
+   - Ensure Pandoc is installed. Download it from [Pandoc website](https://pandoc.org/installing.html).
+
+   - For high-quality PDF conversion, install a LaTeX distribution like TeX Live or MikTeX:
+     - **TeX Live** (Linux/macOS):
+       ```sh
+       sudo apt-get install texlive-full
+       # or
+       brew install --cask mactex
+       ```
+     - **MikTeX** (Windows):
+       - Download from [MikTeX website](https://miktex.org/download).
 
 2. **Run the Script**:
    - Execute the script to select a Markdown file and save the DOCX and PDF files:
@@ -31,9 +46,9 @@ This script converts a Markdown file to a formatted DOCX file and then converts 
 3. **Functionality**:
    - The script will open a file dialog to select a Markdown file.
    - It will then convert the Markdown content to a formatted DOCX file.
-   - Finally, it will convert the DOCX file to a PDF file.
+   - Finally, it will convert the DOCX file to a PDF file using the `pdflatex` engine for high-quality output.
 
-## Example Usage
+### Example Usage
 
 1. **Markdown File**:
    ```markdown
