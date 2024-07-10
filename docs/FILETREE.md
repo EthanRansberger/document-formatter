@@ -11,7 +11,7 @@ C:.
 ¦   
 +---.github
 ¦   +---workflows
-¦           documentation.yml
+¦           build_docs.yml
 ¦           tests.yml
 ¦           update-file-tree.yml
 ¦           
@@ -32,6 +32,16 @@ C:.
 ¦           design_document.pdf
 ¦           README.md
 ¦           
++---scripts
+¦       generate_filetree_diagram.py
+¦       generate_graphviz_diagram.py
+¦       generate_matplotlib_diagram.py
+¦       generate_networkx_diagram.py
+¦       generate_plotly_diagram.py
+¦       generate_pygraphviz_diagram.py
+¦       run_document_formatter.bat
+¦       update_filetree.bat
+¦       
 +---source
 ¦   ¦   conf.py
 ¦   ¦   index.rst
@@ -79,23 +89,18 @@ C:.
 ¦               __init__.cpython-310.pyc
 ¦               
 +---tests
-¦   ¦   test_docx_to_pdf.py
-¦   ¦   test_html_to_docx
-¦   ¦   test_markdown_to_formatted_docx.py
-¦   ¦   test_markdown_to_html
-¦   ¦   __init__.py
-¦   ¦   
-¦   +---samples
-¦       +---output
-¦       +---sample_jsons
-¦       ¦       taleo.json
-¦       ¦       
-¦       +---sample_resumes
-¦               md_test_9.md
-¦               
-+---venv
-    +---scripts
-            run_document_formatter.bat
-            update_filetree.bat
-            
+    ¦   test_docx_to_pdf.py
+    ¦   test_html_to_docx
+    ¦   test_markdown_to_formatted_docx.py
+    ¦   test_markdown_to_html
+    ¦   __init__.py
+    ¦   
+    +---samples
+        +---output
+        +---sample_jsons
+        ¦       taleo.json
+        ¦       
+        +---sample_resumes
+                md_test_9.md
+                
 tree /F 

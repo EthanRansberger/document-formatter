@@ -2,7 +2,7 @@
 REM Navigate to the directory of the batch file
 cd %~dp0
 REM Navigate up three directories to the repository root
-cd ../../
+cd ../
 echo Current directory: %cd%
 pause 
 REM Set the file path for the file tree document

@@ -1,0 +1,62 @@
+name: Generate Visualizations
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  create_visualizations:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install matplotlib networkx pydot seaborn
+
+    - name: Generate Matplotlib visualization
+      run: |
+        python scripts/generate_matplotlib_visualization.py
+
+    - name: Generate NetworkX visualization
+      run: |
+        python scripts/generate_networkx_visualization.py
+
+    - name: Generate Seaborn visualization
+      run: |
+        python scripts/generate_seaborn_visualization.py
+
+    - name: Upload visualizations
+      uses: actions/upload-artifact@v2
+      with:
+        name: visualizations
+        path: visualizations/
+
+    - name: Generate visualization gallery
+      run: |
+        mkdir -p docs/visualizations
+        mv visualizations/*.png docs/visualizations/
+        echo "# Visualizations" > docs/visualizations/README.md
+        for file in docs/visualizations/*.png; do
+          echo "![Visualization](./${file##*/})" >> docs/visualizations/README.md
+        done
+
+    - name: Commit and push visualizations
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add docs/visualizations/README.md docs/visualizations/*.png
+        git commit -m 'Add visualizations'
+        git push
