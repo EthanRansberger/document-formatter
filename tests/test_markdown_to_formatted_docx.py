@@ -1,7 +1,10 @@
 import os
 import sys
 import unittest
-from src.processing.markdown_to_formatted_docx import main as generate_resume
+from ../ import src
+from src.processing.markdown_to_html import markdown_to_html
+from src.processing.html_to_docx import html_to_docx
+from src.processing.docx_to_pdf import docx_to_pdf
 
 class TestMarkdownToFormattedDocx(unittest.TestCase):
 
@@ -23,19 +26,25 @@ class TestMarkdownToFormattedDocx(unittest.TestCase):
         markdown_path = self.get_most_recent_file(self.sample_resumes_dir, '.md')
         json_path = self.get_most_recent_file(self.sample_jsons_dir, '.json')
 
-        sys.argv = ['markdown_to_formatted_docx.py', '--ci', json_path, markdown_path]
-        generate_resume()
+        # Simulate command line arguments
+        sys.argv = ['main.py', '--ci', json_path, markdown_path]
 
-        # Check if output files are generated
-        base_filename = os.path.splitext(os.path.basename(markdown_path))[0]
-        formatting_name = os.path.splitext(os.path.basename(json_path))[0]
-        expected_docx = os.path.join(self.docx_output_dir, f"{base_filename}_{formatting_name}.docx")
-        expected_pdf = os.path.join(self.pdf_output_dir, f"{base_filename}_{formatting_name}.pdf")
+        # Test markdown to HTML
+        with open(markdown_path, 'r', encoding='utf-8') as f:
+            markdown_text = f.read()
+        html_content = markdown_to_html(markdown_text)
 
-        self.assertTrue(os.path.exists(expected_docx), f"Expected DOCX file {expected_docx} does not exist.")
-        self.assertTrue(os.path.exists(expected_pdf), f"Expected PDF file {expected_pdf} does not exist.")
+        # Test HTML to DOCX
+        docx_path = os.path.join(self.docx_output_dir, 'output.docx')
+        html_to_docx(html_content, docx_path, json_path)
+
+        # Test DOCX to PDF
+        pdf_path = os.path.join(self.pdf_output_dir, 'output.pdf')
+        docx_to_pdf(docx_path, pdf_path)
+
+        # Verify the outputs
+        self.assertTrue(os.path.exists(docx_path), f"Expected DOCX file {docx_path} does not exist.")
+        self.assertTrue(os.path.exists(pdf_path), f"Expected PDF file {pdf_path} does not exist.")
 
 if __name__ == '__main__':
-    # Add the src directory to the system path
-    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
     unittest.main()
