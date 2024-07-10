@@ -5,7 +5,6 @@ import markdown
 from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from tkinter import Tk, filedialog
 from bs4 import BeautifulSoup
 import spacy
 from fpdf import FPDF
@@ -109,11 +108,9 @@ def select_files(title, filetypes):
         # If running in a CI environment, use command-line arguments instead of file dialogs
         return os.environ.get(title).split(',')
     else:
-        root = Tk()
-        root.withdraw()  # Hide the root window
         initial_dir = os.path.dirname(os.path.abspath(__file__))  # Set default folder to script's location
-        file_paths = filedialog.askopenfilenames(title=title, initialdir=initial_dir, filetypes=filetypes)
-        return list(file_paths)
+        file_paths = sorted([os.path.join(initial_dir, f) for f in os.listdir(initial_dir) if f.endswith(filetypes[0][1][1:])], key=os.path.getmtime)
+        return [file_paths[-1]]
 
 def create_output_folders():
     docx_output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "docx")
