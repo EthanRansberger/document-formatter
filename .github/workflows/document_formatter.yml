@@ -29,4 +29,12 @@ jobs:
     - name: Run script
       env:
         CI: true
-        JSON_FILES: $(ls sample
+        JSON_FILES: $(ls sample_jsons/*.json | tail -n 1)
+        MARKDOWN_FILES: $(ls sample_resumes/*.md | tail -n 1)
+      run: python markdown_to_formatted_docx.py --ci $JSON_FILES $MARKDOWN_FILES
+
+    - name: Upload outputs
+      uses: actions/upload-artifact@v2
+      with:
+        name: formatted-documents
+        path: output/
