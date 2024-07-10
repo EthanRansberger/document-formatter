@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+      - '**/main'
 
 jobs:
-  create_visualizations:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,44 +17,23 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.10'
+        python-version: '3.8'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install matplotlib networkx pydot seaborn
+        pip install matplotlib networkx plotly
 
-    - name: Generate Matplotlib visualization
+    - name: Generate Matplotlib Diagram
       run: |
-        python scripts/generate_matplotlib_visualization.py
+        python src/processing/generate_matplotlib_diagram.py
 
-    - name: Generate NetworkX visualization
+    - name: Generate Plotly Diagram
       run: |
-        python scripts/generate_networkx_visualization.py
+        python src/processing/generate_plotly_diagram.py
 
-    - name: Generate Seaborn visualization
-      run: |
-        python scripts/generate_seaborn_visualization.py
-
-    - name: Upload visualizations
+    - name: Upload diagrams
       uses: actions/upload-artifact@v2
       with:
-        name: visualizations
-        path: visualizations/
-
-    - name: Generate visualization gallery
-      run: |
-        mkdir -p docs/visualizations
-        mv visualizations/*.png docs/visualizations/
-        echo "# Visualizations" > docs/visualizations/README.md
-        for file in docs/visualizations/*.png; do
-          echo "![Visualization](./${file##*/})" >> docs/visualizations/README.md
-        done
-
-    - name: Commit and push visualizations
-      run: |
-        git config --global user.name 'github-actions'
-        git config --global user.email 'github-actions@github.com'
-        git add docs/visualizations/README.md docs/visualizations/*.png
-        git commit -m 'Add visualizations'
-        git push
+        name: architecture-diagrams
+        path: docs/architecture/*.png

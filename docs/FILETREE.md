@@ -14,6 +14,7 @@ C:.
 ¦           build_docs.yml
 ¦           tests.yml
 ¦           update-file-tree.yml
+¦           visualizations.yml
 ¦           
 +---build
 +---docs
@@ -38,7 +39,6 @@ C:.
 ¦       generate_matplotlib_diagram.py
 ¦       generate_networkx_diagram.py
 ¦       generate_plotly_diagram.py
-¦       generate_pygraphviz_diagram.py
 ¦       run_document_formatter.bat
 ¦       update_filetree.bat
 ¦       
