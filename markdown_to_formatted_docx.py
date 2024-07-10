@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import markdown
 from docx import Document
@@ -8,7 +9,6 @@ from tkinter import Tk, filedialog
 from bs4 import BeautifulSoup
 import spacy
 from fpdf import FPDF
-import pandas as pd
 
 def load_formatting_config(config_path):
     with open(config_path, 'r') as f:
@@ -98,17 +98,22 @@ def docx_to_pdf(docx_path, pdf_path):
 
     for para in doc.paragraphs:
         pdf.set_font("Arial", size=12)
-        pdf.multi_cell(0, 10, para.text)
+        text = para.text.encode('latin-1', 'replace').decode('latin-1')
+        pdf.multi_cell(0, 10, text)
 
     pdf.output(pdf_path)
     print(f"PDF file saved to {pdf_path}")
 
 def select_files(title, filetypes):
-    root = Tk()
-    root.withdraw()  # Hide the root window
-    initial_dir = os.path.dirname(os.path.abspath(__file__))  # Set default folder to script's location
-    file_paths = filedialog.askopenfilenames(title=title, initialdir=initial_dir, filetypes=filetypes)
-    return list(file_paths)
+    if os.environ.get('CI'):
+        # If running in a CI environment, use command-line arguments instead of file dialogs
+        return os.environ.get(title).split(',')
+    else:
+        root = Tk()
+        root.withdraw()  # Hide the root window
+        initial_dir = os.path.dirname(os.path.abspath(__file__))  # Set default folder to script's location
+        file_paths = filedialog.askopenfilenames(title=title, initialdir=initial_dir, filetypes=filetypes)
+        return list(file_paths)
 
 def create_output_folders():
     docx_output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "docx")
@@ -124,8 +129,14 @@ def analyze_resume_with_spacy(text):
     print(f"Keywords extracted: {keywords}")
 
 # Main script
-formatting_config_paths = select_files("Select the JSON formatting configuration files", [("JSON files", "*.json")])
-markdown_paths = select_files("Select the Markdown files", [("Markdown files", "*.md")])
+if len(sys.argv) > 1 and sys.argv[1] == '--ci':
+    # Running in a CI environment
+    formatting_config_paths = sys.argv[2].split(',')
+    markdown_paths = sys.argv[3].split(',')
+else:
+    # Running interactively
+    formatting_config_paths = select_files("Select the JSON formatting configuration files", [("JSON files", "*.json")])
+    markdown_paths = select_files("Select the Markdown files", [("Markdown files", "*.md")])
 
 if markdown_paths and formatting_config_paths:
     docx_output_folder, pdf_output_folder = create_output_folders()
