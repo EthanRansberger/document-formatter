@@ -1,0 +1,38 @@
+{
+    "title": {
+      "font_size": 20,
+      "bold": true,
+      "color": "000000"
+    },
+    "contact_info": {
+      "font_size": 12,
+      "bold": true,
+      "italic": false,
+      "color": "000000"
+    },
+    "heading1": {
+      "font_size": 16,
+      "bold": true,
+      "color": "000000"
+    },
+    "heading2": {
+      "font_size": 14,
+      "bold": false,
+      "italic": false,
+      "color": "000000"
+    },
+    "paragraph": {
+      "font_size": 12,
+      "space_after": 8,
+      "color": "000000"
+    },
+    "list_bullet": {
+      "font_size": 12,
+      "color": "000000"
+    },
+    "list_number": {
+      "font_size": 12,
+      "color": "000000"
+    }
+  }
+  
