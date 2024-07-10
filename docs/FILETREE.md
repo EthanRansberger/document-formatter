@@ -5,6 +5,7 @@ C:.
 ¦   document-formatter.code-workspace
 ¦   README.md
 ¦   requirements.txt
+¦   run_document_formatter.bat
 ¦   update_filetree.bat
 ¦   
 +---.github

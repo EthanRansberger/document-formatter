@@ -1,14 +1,12 @@
-import os
-import sys
 import json
-import markdown
+import os
+from bs4 import BeautifulSoup
 from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from bs4 import BeautifulSoup
-import spacy
 from fpdf import FPDF
-from config import load_ats_config
+import markdown
+import spacy
 
 def load_formatting_config(config_path):
     with open(config_path, 'r') as f:
@@ -30,7 +28,7 @@ def process_html_to_docx(soup, document, formatting):
         if 'color' in formatting.get('title', {}):
             run.font.color.rgb = RGBColor.from_string(formatting['title']['color'])
         title.extract()
-
+    
     # Add contact info
     contact_info = soup.find_all('p')[0:2]
     if contact_info:
@@ -45,7 +43,7 @@ def process_html_to_docx(soup, document, formatting):
                 run.font.color.rgb = RGBColor.from_string(formatting['contact_info']['color'])
         contact_info[0].extract()
         contact_info[1].extract()
-
+    
     # Add the rest of the content
     for element in soup.find_all(['h2', 'h3', 'p', 'ul', 'ol']):
         if element.name == 'h2':
@@ -129,33 +127,3 @@ def analyze_resume_with_spacy(text):
     keywords = [token.text for token in doc if token.is_alpha and not token.is_stop]
     print(f"Key phrases extracted: {key_phrases}")
     print(f"Keywords extracted: {keywords}")
-
-# Main script execution
-if len(sys.argv) > 1 and sys.argv[1] == '--ci':
-    # Running in a CI environment
-    ats_system = sys.argv[2]
-    markdown_paths = sys.argv[3].split(',')
-    formatting = load_ats_config(ats_system)
-else:
-    # Running interactively
-    ats_system = input("Enter the ATS system (e.g., taleo, workday): ")
-    markdown_paths = select_files("Select the Markdown files", [("Markdown files", "*.md")])
-    formatting = load_ats_config(ats_system)
-
-if markdown_paths:
-    docx_output_folder, pdf_output_folder = create_output_folders()
-    for markdown_path in markdown_paths:
-        with open(markdown_path, 'r', encoding='utf-8') as f:
-            markdown_text = f.read()
-        html_content = markdown_to_html(markdown_text)
-        base_filename = os.path.splitext(os.path.basename(markdown_path))[0]
-        docx_filename = f"{base_filename}_{ats_system}.docx"
-        docx_path = os.path.join(docx_output_folder, docx_filename)
-        html_to_docx(html_content, docx_path, formatting)
-        print(f"DOCX file saved to {docx_path}")
-        pdf_filename = f"{base_filename}_{ats_system}.pdf"
-        pdf_path = os.path.join(pdf_output_folder, pdf_filename)
-        docx_to_pdf(docx_path, pdf_path)
-        analyze_resume_with_spacy(markdown_text)
-else:
-    print("File selection cancelled.")
