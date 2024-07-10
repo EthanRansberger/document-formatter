@@ -1,4 +1,4 @@
-name: Document Formatter
+name: Document Formatter Workflow
 
 on:
   push:
@@ -9,40 +9,41 @@ on:
       - main
 
 jobs:
-  build:
+  format_documents:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Find most recent JSON and Markdown files
-      id: find-files
-      run: |
-        echo "JSON_FILES=$(ls sample_jsons/*.json | tail -n 1)" >> $GITHUB_ENV
-        echo "MARKDOWN_FILES=$(ls sample_resumes/*.md | tail -n 1)" >> $GITHUB_ENV
+      - name: List files for debugging
+        run: |
+          ls -R
 
-    - name: Run document formatter
-      run: python markdown_to_formatted_docx.py --ci ${{ env.JSON_FILES }} ${{ env.MARKDOWN_FILES }}
+      - name: Run document formatter
+        env:
+          JSON_FILES: $(ls -t sample_jsons/*.json | head -n 1)
+          MARKDOWN_FILES: $(ls -t sample_resumes/*.md | head -n 1)
+        run: python markdown_to_formatted_docx.py --ci $JSON_FILES $MARKDOWN_FILES
 
-    - name: Upload DOCX artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: docx-files
-        path: output/docx/
+      - name: Upload output DOCX files
+        uses: actions/upload-artifact@v2
+        with:
+          name: docx-files
+          path: output/docx/
 
-    - name: Upload PDF artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: pdf-files
-        path: output/pdf/
+      - name: Upload output PDF files
+        uses: actions/upload-artifact@v2
+        with:
+          name: pdf-files
+          path: output/pdf/
