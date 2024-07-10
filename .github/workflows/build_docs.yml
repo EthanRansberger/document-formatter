@@ -1,4 +1,4 @@
-name: Run Tests
+name: Build Documentation
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '**'
 
 jobs:
-  test:
+  build-docs:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,6 +23,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Tests
+      - name: Build documentation
         run: |
-          pytest tests/
+          mkdir -p docs
+          cd docs
+          python ../src/generate_documentation.py
+          cd ..
+          git add docs/
+          git commit -m "Build documentation"
+          git push
