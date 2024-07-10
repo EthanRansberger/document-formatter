@@ -1,5 +1,5 @@
 import unittest
-from src.markdown_to_formatted_docx import your_function_name
+from src.processing.markdown_to_formatted_docx import your_function_name
 
 
 class TestMarkdownToFormattedDocx(unittest.TestCase):

@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from src.markdown_to_formatted_docx import main as generate_resume
+from src.processing.markdown_to_formatted_docx import main as generate_resume
 
 class TestMarkdownToFormattedDocx(unittest.TestCase):
 

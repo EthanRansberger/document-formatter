@@ -1,22 +1,9 @@
-import json
 import os
 from bs4 import BeautifulSoup
 from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from fpdf import FPDF
-import markdown
-import spacy
-
-def load_formatting_config(config_path):
-    with open(config_path, 'r') as f:
-        return json.load(f)
-
-def markdown_to_html(markdown_text):
-    return markdown.markdown(markdown_text)
-
-def get_formatting_value(formatting, section, key, default):
-    return formatting.get(section, {}).get(key, default)
+from utils import get_formatting_value, load_formatting_config
 
 def process_html_to_docx(soup, document, formatting):
     # Add title
@@ -28,7 +15,7 @@ def process_html_to_docx(soup, document, formatting):
         if 'color' in formatting.get('title', {}):
             run.font.color.rgb = RGBColor.from_string(formatting['title']['color'])
         title.extract()
-    
+
     # Add contact info
     contact_info = soup.find_all('p')[0:2]
     if contact_info:
@@ -43,7 +30,7 @@ def process_html_to_docx(soup, document, formatting):
                 run.font.color.rgb = RGBColor.from_string(formatting['contact_info']['color'])
         contact_info[0].extract()
         contact_info[1].extract()
-    
+
     # Add the rest of the content
     for element in soup.find_all(['h2', 'h3', 'p', 'ul', 'ol']):
         if element.name == 'h2':
@@ -89,41 +76,17 @@ def html_to_docx(html, docx_path, formatting):
     process_html_to_docx(soup, document, formatting)
     document.save(docx_path)
 
-def docx_to_pdf(docx_path, pdf_path):
-    doc = Document(docx_path)
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
-    for para in doc.paragraphs:
-        pdf.set_font("Arial", size=12)
-        text = para.text.encode('latin-1', 'replace').decode('latin-1')
-        pdf.multi_cell(0, 10, text)
-    pdf.output(pdf_path)
-    print(f"PDF file saved to {pdf_path}")
-
-def select_files(title, filetypes):
-    if os.environ.get('CI'):
-        # If running in a CI environment, use command-line arguments instead of file dialogs
-        return os.environ.get(title).split(',')
-    else:
-        from tkinter import Tk, filedialog
-        root = Tk()
-        root.withdraw()  # Hide the root window
-        initial_dir = os.path.dirname(os.path.abspath(__file__))  # Set default folder to script's location
-        file_paths = filedialog.askopenfilenames(title=title, initialdir=initial_dir, filetypes=filetypes)
-        return list(file_paths)
-
-def create_output_folders():
-    docx_output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "docx")
-    pdf_output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "pdf")
-    os.makedirs(docx_output_folder, exist_ok=True)
-    os.makedirs(pdf_output_folder, exist_ok=True)
-    return docx_output_folder, pdf_output_folder
-
-def analyze_resume_with_spacy(text):
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp(text)
-    key_phrases = [chunk.text for chunk in doc.noun_chunks]
-    keywords = [token.text for token in doc if token.is_alpha and not token.is_stop]
-    print(f"Key phrases extracted: {key_phrases}")
-    print(f"Keywords extracted: {keywords}")
+if __name__ == "__main__":
+    sample_html = """
+    <h1>Sample Title</h1>
+    <p>Contact Info Line 1</p>
+    <p>Contact Info Line 2</p>
+    <h2>Sample Heading 1</h2>
+    <p>Sample paragraph text.</p>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+    </ul>
+    """
+    formatting = load_formatting_config("path_to_formatting_config.json")
+    html_to_docx(sample_html, "sample_output.docx", formatting)
