@@ -1,10 +1,12 @@
-name: Generate Visualizations
+name: Update File Tree
 
 on:
   push:
     branches:
       - main
-      - '**/main'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -17,23 +19,18 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'
+        python-version: 3.10
 
-    - name: Install dependencies
+    - name: Generate File Tree
       run: |
-        python -m pip install --upgrade pip
-        pip install matplotlib networkx plotly
+        scripts/update_filetree.bat
 
-    - name: Generate Matplotlib Diagram
+    - name: Commit and Push File Tree
       run: |
-        python src/processing/generate_matplotlib_diagram.py
-
-    - name: Generate Plotly Diagram
-      run: |
-        python src/processing/generate_plotly_diagram.py
-
-    - name: Upload diagrams
-      uses: actions/upload-artifact@v2
-      with:
-        name: architecture-diagrams
-        path: docs/architecture/*.png
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add docs/FILETREE.md
+        git commit -m "Update file tree"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

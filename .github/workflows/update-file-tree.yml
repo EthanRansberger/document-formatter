@@ -3,28 +3,32 @@ name: Update File Tree
 on:
   push:
     branches:
-      - '**'
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  update-file-tree:
+  update_file_tree:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install tree utility
-        run: sudo apt-get install tree
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
 
-      - name: Generate file tree
-        run: |
-          cd $GITHUB_WORKSPACE
-          tree -F > docs/FILETREE.md
+    - name: Update file tree
+      run: |
+        scripts/update_filetree.bat
 
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git add docs/FILETREE.md
-          git commit -m "Update file tree"
-          git push
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add docs/FILETREE.md
+        git commit -m "Updated file tree"
+        git push
