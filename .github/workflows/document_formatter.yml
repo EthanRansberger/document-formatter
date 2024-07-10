@@ -29,8 +29,8 @@ jobs:
     - name: Find most recent files
       id: find_files
       run: |
-        echo "JSON_FILES=$(ls -t sample_jsons/*.json | head -n 1)" >> $GITHUB_ENV
-        echo "MARKDOWN_FILES=$(ls -t sample_resumes/*.md | head -n 1)" >> $GITHUB_ENV
+        echo "JSON_FILES=$(ls -t /mnt/c/Users/Ethan/Documents/user_data/samples/sample_jsons/*.json | head -n 1)" >> $GITHUB_ENV
+        echo "MARKDOWN_FILES=$(ls -t /mnt/c/Users/Ethan/Documents/user_data/samples/sample_resumes/*.md | head -n 1)" >> $GITHUB_ENV
 
     - name: Run document formatter
       run: python markdown_to_formatted_docx.py --ci ${{ env.JSON_FILES }} ${{ env.MARKDOWN_FILES }}
@@ -39,10 +39,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: output-docx-files
-        path: output/docx/
+        path: /mnt/c/Users/Ethan/Documents/user_data/samples/output/docx/
 
     - name: Upload output PDF files
       uses: actions/upload-artifact@v2
       with:
         name: output-pdf-files
-        path: output/pdf/
+        path: /mnt/c/Users/Ethan/Documents/user_data/samples/output/pdf/
