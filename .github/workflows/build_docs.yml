@@ -26,14 +26,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build Documentation
+    - name: Run document formatter
       run: |
-        python src/main.py tests/samples/sample_jsons/taleo.json tests/samples/sample_resumes/md_test_9.md
-        ls docs/output
+        mkdir -p samples/output
+        python src/main.py --config_path tests/samples/sample_jsons/taleo.json --markdown_path tests/samples/sample_resumes/md_test_9.md
 
-    - name: Upload DOCX and PDF files
+    - name: Upload formatted docs
       uses: actions/upload-artifact@v2
       with:
-        name: docs
-        path: docs/output/*.docx
-        path: docs/output/*.pdf
+        name: formatted-docs
+        path: samples/output/

@@ -1,4 +1,4 @@
-name: Update File Tree
+name: Generate Visualizations
 
 on:
   push:
@@ -9,28 +9,37 @@ on:
       - main
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
-    - name: Generate File Tree
+    - name: Install dependencies
       run: |
-        scripts/update_filetree.bat
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-    - name: Commit and Push File Tree
-      run: |
-        git config --global user.name 'github-actions'
-        git config --global user.email 'github-actions@github.com'
-        git add docs/FILETREE.md
-        git commit -m "Update file tree"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Generate Plotly Diagram
+      run: python scripts/generate_plotly_diagram.py
+
+    - name: Generate Filetree Diagram
+      run: python scripts/generate_filetree_diagram.py
+
+    - name: Generate NetworkX Diagram
+      run: python scripts/generate_networkx_diagram.py
+
+    - name: Generate Matplotlib Diagram
+      run: python scripts/generate_matplotlib_diagram.py
+
+    - name: Upload visualizations
+      uses: actions/upload-artifact@v2
+      with:
+        name: visualizations
+        path: docs/visualizations/
