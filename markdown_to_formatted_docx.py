@@ -5,6 +5,7 @@ import markdown
 from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from tkinter import Tk, filedialog
 from bs4 import BeautifulSoup
 import spacy
 from fpdf import FPDF
