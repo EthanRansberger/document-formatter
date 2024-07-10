@@ -1,0 +1,30 @@
+name: Update File Tree
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  update-filetree:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run UPDATE_FILETREE.BAT
+      run: .\venv\scripts\update_filetree.bat
+
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit changes
+      run: |
+        git add docs/FILETREE.md
+        git commit -m "Update file tree structure"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
