@@ -36,4 +36,6 @@ class TestMarkdownToFormattedDocx(unittest.TestCase):
         self.assertTrue(os.path.exists(expected_pdf), f"Expected PDF file {expected_pdf} does not exist.")
 
 if __name__ == '__main__':
+    # Add the src directory to the system path
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
     unittest.main()

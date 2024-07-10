@@ -1,12 +1,6 @@
-name: Run document formatter
+name: Document Formatter
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   build:
@@ -25,24 +19,19 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install .
 
-    - name: Find most recent files
-      id: find_files
+    - name: Run Document Formatter
+      env:
+        JSON_FILES: $(ls -1t sample_jsons/*.json | head -n 1)
+        MARKDOWN_FILES: $(ls -1t sample_resumes/*.md | head -n 1)
       run: |
-        echo "JSON_FILES=$(ls -t /mnt/c/Users/Ethan/Documents/user_data/samples/sample_jsons/*.json | head -n 1)" >> $GITHUB_ENV
-        echo "MARKDOWN_FILES=$(ls -t /mnt/c/Users/Ethan/Documents/user_data/samples/sample_resumes/*.md | head -n 1)" >> $GITHUB_ENV
+        python src/markdown_to_formatted_docx.py --ci $JSON_FILES $MARKDOWN_FILES
 
-    - name: Run document formatter
-      run: python markdown_to_formatted_docx.py --ci ${{ env.JSON_FILES }} ${{ env.MARKDOWN_FILES }}
-
-    - name: Upload output DOCX files
+    - name: Archive Output
       uses: actions/upload-artifact@v2
       with:
-        name: output-docx-files
-        path: /mnt/c/Users/Ethan/Documents/user_data/samples/output/docx/
-
-    - name: Upload output PDF files
-      uses: actions/upload-artifact@v2
-      with:
-        name: output-pdf-files
-        path: /mnt/c/Users/Ethan/Documents/user_data/samples/output/pdf/
+        name: formatted-docs
+        path: |
+          output/docx/*.docx
+          output/pdf/*.pdf
