@@ -1,19 +1,8 @@
 import unittest
-from src.processing.markdown_to_formatted_docx import your_function_name
 
-
-class TestMarkdownToFormattedDocx(unittest.TestCase):
-
-    def test_your_function_name(self):
-        # Arrange
-        input_data = "your test input"
-        expected_output = "your expected output"
-        
-        # Act
-        result = your_function_name(input_data)
-        
-        # Assert
-        self.assertEqual(result, expected_output)
-
-if __name__ == '__main__':
-    unittest.main()
+def load_tests(loader, tests, pattern):
+    suite = unittest.TestSuite()
+    for all_test_suite in unittest.defaultTestLoader.discover('.', pattern='test_*.py'):
+        for test_suite in all_test_suite:
+            suite.addTests(test_suite)
+    return suite

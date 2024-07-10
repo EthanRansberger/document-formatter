@@ -1,0 +1,39 @@
+name: Generate Visualizations
+
+on:
+  push:
+    branches:
+      - main
+      - '**/main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install matplotlib networkx plotly
+
+    - name: Generate Matplotlib Diagram
+      run: |
+        python src/processing/generate_matplotlib_diagram.py
+
+    - name: Generate Plotly Diagram
+      run: |
+        python src/processing/generate_plotly_diagram.py
+
+    - name: Upload diagrams
+      uses: actions/upload-artifact@v2
+      with:
+        name: architecture-diagrams
+        path: docs/architecture/*.png

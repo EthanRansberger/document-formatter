@@ -1,0 +1,30 @@
+name: Update File Tree
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  update-file-tree:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install tree utility
+        run: sudo apt-get install tree
+
+      - name: Generate file tree
+        run: |
+          cd $GITHUB_WORKSPACE
+          tree -F > docs/FILETREE.md
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add docs/FILETREE.md
+          git commit -m "Update file tree"
+          git push
