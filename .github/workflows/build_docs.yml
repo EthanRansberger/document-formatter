@@ -1,4 +1,4 @@
-name: Build Docs
+name: Build Documentation
 
 on:
   push:
@@ -16,24 +16,23 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.10'
+        python-version: 3.10
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Process all Markdown and JSON samples
+    - name: Find and process all JSON and Markdown combinations
       run: |
-        mkdir -p output
         for json_file in tests/samples/sample_jsons/*.json; do
           for md_file in tests/samples/sample_resumes/*.md; do
-            python src/main.py --input-json "$json_file" --input-md "$md_file" --output "output"
+            python src/main.py --ci "$json_file" "$md_file"
           done
         done
 
-    - name: Upload formatted documents
+    - name: Upload output DOCX and PDF files
       uses: actions/upload-artifact@v2
       with:
         name: formatted-documents
-        path: output/
+        path: output/docx/**, output/pdf/**
