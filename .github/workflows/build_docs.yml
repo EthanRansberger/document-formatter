@@ -4,19 +4,16 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  build-docs:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python 3.10
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
@@ -28,11 +25,12 @@ jobs:
 
     - name: Run document formatter
       run: |
-        mkdir -p samples/output
-        python src/main.py --config_path tests/samples/sample_jsons/taleo.json --markdown_path tests/samples/sample_resumes/md_test_9.md
+        python src/main.py --input-path tests/samples/sample_resumes/md_test_9.md --config-path tests/samples/sample_jsons/taleo.json --output-path tests/samples/output
 
-    - name: Upload formatted docs
-      uses: actions/upload-artifact@v2
-      with:
-        name: formatted-docs
-        path: samples/output/
+    - name: Commit and push output
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add tests/samples/output/*
+        git commit -m 'Add formatted resume outputs'
+        git push
