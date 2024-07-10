@@ -9,14 +9,14 @@ on:
       - main
 
 jobs:
-  build_docs:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
@@ -26,12 +26,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build documents
+    - name: Build Documentation
       run: |
-        python src/main.py --json tests/samples/sample_jsons --md tests/samples/sample_resumes
+        python src/main.py tests/samples/sample_jsons/taleo.json tests/samples/sample_resumes/md_test_9.md
+        ls docs/output
 
-    - name: Upload documents
+    - name: Upload DOCX and PDF files
       uses: actions/upload-artifact@v2
       with:
-        name: built-documents
-        path: output/docx
+        name: docs
+        path: docs/output/*.docx
+        path: docs/output/*.pdf
