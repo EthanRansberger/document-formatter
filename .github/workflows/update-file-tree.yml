@@ -3,10 +3,7 @@ name: Update File Tree
 on:
   push:
     branches:
-      - '**'
-
-permissions:
-  contents: write
+      - main
 
 jobs:
   update-filetree:
@@ -16,18 +13,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Run UPDATE_FILETREE.BAT
-      run: .\venv\scripts\update_filetree.bat
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-    - name: Configure Git
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+    - name: Run BAT script to update file tree
+      run: .\update_filetree.bat
 
-    - name: Commit changes
+    - name: Commit and push changes
       run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
         git add docs/FILETREE.md
-        git commit -m "Update file tree structure"
+        git commit -m "Update file tree"
         git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

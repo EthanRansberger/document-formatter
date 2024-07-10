@@ -1,7 +1,14 @@
 @echo off
-cd ../../..
-IF EXIST docs\FILETREE.md (
-    del docs\FILETREE.md
+cd %~dp0
+cd ../../../
+set FILEPATH=docs\FILETREE.md
+
+:: Check if the file exists and delete it
+if exist %FILEPATH% (
+    del %FILEPATH%
 )
-tree /F > docs\FILETREE.md
-echo File tree structure has been updated in docs\FILETREE.md
+
+:: Create the file tree and save it to FILETREE.md
+tree /F > %FILEPATH%
+
+echo File tree updated in %FILEPATH%
