@@ -3,5 +3,5 @@ python-docx
 fpdf
 beautifulsoup4
 spacy
-pandas
-    
+tk
+pdfkit
