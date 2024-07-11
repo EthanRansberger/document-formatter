@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from ../ import src
+import src
 from src.processing.markdown_to_html import markdown_to_html
 from src.processing.html_to_docx import html_to_docx
 from src.processing.docx_to_pdf import docx_to_pdf
