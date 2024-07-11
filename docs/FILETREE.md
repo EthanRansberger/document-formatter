@@ -11,9 +11,9 @@ C:.
 ¦   
 +---.github
 ¦   +---workflows
-¦           build_docs.yml
+¦           build-docs.yml
+¦           common-steps.yml
 ¦           tests.yml
-¦           update-file-tree.yml
 ¦           visualizations.yml
 ¦           
 +---build
@@ -90,9 +90,9 @@ C:.
 ¦               
 +---tests
     ¦   test_docx_to_pdf.py
-    ¦   test_html_to_docx
+    ¦   test_html_to_docx.py
     ¦   test_markdown_to_formatted_docx.py
-    ¦   test_markdown_to_html
+    ¦   test_markdown_to_html.py
     ¦   __init__.py
     ¦   
     +---samples
