@@ -53,6 +53,9 @@ C:.
 ¦   ¦   
 ¦   +---analysis
 ¦   ¦       analysis.py
+¦   ¦       keyword_extraction.py
+¦   ¦       key_phrase_extraction.py
+¦   ¦       sentiment_analysis.py
 ¦   ¦       __init__.py
 ¦   ¦       
 ¦   +---config
