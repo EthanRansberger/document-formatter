@@ -1,9 +1,22 @@
 import json
+import yaml
+import xml.etree.ElementTree as ET
 import os
+import jsonschema
+from jsonschema import validate
 
 def load_formatting_config(config_path):
     with open(config_path, 'r') as f:
         return json.load(f)
+
+def load_yaml_config(config_path):
+    with open(config_path, 'r') as f:
+        return yaml.safe_load(f)
+
+def load_xml_config(config_path):
+    tree = ET.parse(config_path)
+    root = tree.getroot()
+    return {child.tag: child.text for child in root}
 
 def merge_configs(general_config, specific_config):
     merged_config = general_config.copy()
@@ -32,3 +45,15 @@ def load_ats_config(ats_system):
         specific_config = load_formatting_config(specific_config_path)
         return merge_configs(general_config, specific_config)
     return general_config
+
+def validate_config(config, schema_path):
+    with open(schema_path, 'r') as schema_file:
+        schema = json.load(schema_file)
+    validate(instance=config, schema=schema)
+
+def apply_environment_overrides(config):
+    for key in config:
+        env_value = os.getenv(key.upper())
+        if env_value is not None:
+            config[key] = env_value
+    return config
