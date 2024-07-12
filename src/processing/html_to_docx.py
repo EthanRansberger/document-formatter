@@ -76,10 +76,9 @@ def process_html_to_docx(soup, document, formatting):
                     for run in p.runs:
                         run.font.color.rgb = RGBColor.from_string(formatting['list_number']['color'])
 
-def html_to_docx(html, docx_path, config_path):
+def html_to_docx(html, docx_path, formatting):
     document = Document()
     soup = BeautifulSoup(html, 'html.parser')
-    formatting = load_formatting_config(config_path)
     process_html_to_docx(soup, document, formatting)
     document.save(docx_path)
 
@@ -95,4 +94,4 @@ if __name__ == "__main__":
         <li>Item 2</li>
     </ul>
     """
-    html_to_docx(sample_html, "sample_output.docx", "path_to_formatting_config.json")
+    html_to_docx(sample_html, "sample_output.docx", {"title": {"font_size": 20}})

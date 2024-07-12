@@ -12,9 +12,10 @@ def select_files(title, filetypes):
         file_paths = filedialog.askopenfilenames(title=title, initialdir=initial_dir, filetypes=filetypes)
         return list(file_paths)
 
+
 def create_output_folders():
-    docx_output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "docx")
-    pdf_output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "pdf")
+    docx_output_folder = os.path.join("samples", "output", "docx")
+    pdf_output_folder = os.path.join("samples", "output", "pdf")
     os.makedirs(docx_output_folder, exist_ok=True)
     os.makedirs(pdf_output_folder, exist_ok=True)
     return docx_output_folder, pdf_output_folder
