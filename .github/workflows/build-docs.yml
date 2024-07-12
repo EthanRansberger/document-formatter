@@ -12,17 +12,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Generate formatted documents
         run: |
           python src/main.py
+
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -32,9 +36,11 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate unique tag name
         id: tag_name
         run: echo "TAG_NAME=pre-release-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
       - name: Create pre-release
         id: create_release
         uses: actions/create-release@v1
@@ -45,28 +51,36 @@ jobs:
           release_name: 'Pre-Release'
           draft: false
           prerelease: true
+
+      - name: Zip DOCX files
+        run: zip -r docx_files.zip samples/output/docx
+
+      - name: Zip PDF files
+        run: zip -r pdf_files.zip samples/output/pdf
+
       - name: Upload DOCX files
-        run: |
-          for file in samples/output/docx/*; do
-            echo "Uploading $file"
-            curl -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document" \
-              --data-binary @"$file" \
-              "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
-          done
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: docx_files.zip
+          asset_name: docx_files.zip
+          asset_content_type: application/zip
+
       - name: Upload PDF files
-        run: |
-          for file in samples/output/pdf/*; do
-            echo "Uploading $file"
-            curl -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: application/pdf" \
-              --data-binary @"$file" \
-              "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
-          done
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: pdf_files.zip
+          asset_name: pdf_files.zip
+          asset_content_type: application/zip
+
       - name: Log success message
         run: echo "Formatted documents generated, pushed, and uploaded to pre-release successfully."
+
       - name: Log error message on failure
         if: failure()
         run: echo "An error occurred during the build-docs process." > error_log.txt
