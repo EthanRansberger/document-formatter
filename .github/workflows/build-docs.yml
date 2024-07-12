@@ -27,10 +27,14 @@ jobs:
       run: python src/build_docs.py
 
     - name: Archive docx files
-      run: zip -r docx_files.zip src/samples/output/docx
+      run: |
+        cd src/samples/output
+        zip -r ../../../../docx_files.zip docx
 
     - name: Archive pdf files
-      run: zip -r pdf_files.zip src/samples/output/pdf
+      run: |
+        cd src/samples/output
+        zip -r ../../../../pdf_files.zip pdf
 
     - name: Upload docx files
       uses: actions/upload-artifact@v2
