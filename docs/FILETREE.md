@@ -11,6 +11,8 @@ C:.
 ¦   requirements.txt
 ¦   
 +---.github
+¦   ¦   update-filetree.yml
+¦   ¦   
 ¦   +---workflows
 ¦           build-docs.yml
 ¦           common-steps.yml
@@ -35,14 +37,10 @@ C:.
 ¦   ¦       README.md
 ¦   ¦       
 ¦   +---visualizations
++---logs
+¦       error.log
+¦       
 +---samples
-¦   +---output
-¦       +---docx
-¦       ¦       md_test_9_taleo.docx
-¦       ¦       
-¦       +---pdf
-¦               md_test_9_taleo.pdf
-¦               
 +---scripts
 ¦       generate_filetree_diagram.py
 ¦       generate_graphviz_diagram.py
@@ -84,8 +82,10 @@ C:.
 ¦   ¦   +---output
 ¦   ¦   +---sample_jsons
 ¦   ¦   ¦       taleo.json
+¦   ¦   ¦       taleo_mk2.json
 ¦   ¦   ¦       
 ¦   ¦   +---sample_resumes
+¦   ¦           md_test_10.md
 ¦   ¦           md_test_9.md
 ¦   ¦           
 ¦   +---utils
