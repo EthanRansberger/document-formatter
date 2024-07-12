@@ -1,9 +1,15 @@
-import os
+import json
 from bs4 import BeautifulSoup
 from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from src.utils.config_utils import get_formatting_value, load_formatting_config
+
+def get_formatting_value(formatting, section, attribute, default):
+    return formatting.get(section, {}).get(attribute, default)
+
+def load_formatting_config(config_path):
+    with open(config_path, 'r') as file:
+        return json.load(file)
 
 def process_html_to_docx(soup, document, formatting):
     # Add title
@@ -70,9 +76,10 @@ def process_html_to_docx(soup, document, formatting):
                     for run in p.runs:
                         run.font.color.rgb = RGBColor.from_string(formatting['list_number']['color'])
 
-def html_to_docx(html, docx_path, formatting):
+def html_to_docx(html, docx_path, config_path):
     document = Document()
     soup = BeautifulSoup(html, 'html.parser')
+    formatting = load_formatting_config(config_path)
     process_html_to_docx(soup, document, formatting)
     document.save(docx_path)
 
@@ -88,5 +95,4 @@ if __name__ == "__main__":
         <li>Item 2</li>
     </ul>
     """
-    formatting = load_formatting_config("path_to_formatting_config.json")
-    html_to_docx(sample_html, "sample_output.docx", formatting)
+    html_to_docx(sample_html, "sample_output.docx", "path_to_formatting_config.json")
