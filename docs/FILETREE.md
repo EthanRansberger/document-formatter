@@ -2,6 +2,7 @@ Folder PATH listing for volume Acer
 Volume serial number is 729C-23CF
 C:.
 ¦   .gitattributes
+¦   .gitignore
 ¦   document-formatter.code-workspace
 ¦   error_log.txt
 ¦   make.bat
@@ -30,25 +31,20 @@ C:.
 ¦   ¦           diagram2.svg
 ¦   ¦           
 ¦   +---design
-¦   ¦       design_document.pdf
-¦   ¦       README.md
-¦   ¦       
-¦   +---samples
-¦       +---output
-¦       +---sample_jsons
-¦       ¦       taleo.json
+¦           design_document.pdf
+¦           README.md
+¦           
++---samples
+¦   +---output
+¦       +---docx
+¦       ¦       md_test_9_taleo.docx
 ¦       ¦       
-¦       +---sample_resumes
-¦               md_test_9.md
+¦       +---pdf
+¦               md_test_9_taleo.pdf
 ¦               
-+---logs
-¦       error.log
-¦       
 +---scripts
 ¦       generate_filetree_diagram.py
 ¦       generate_graphviz_diagram.py
-¦       generate_matplotlib_diagram.py
-¦       generate_networkx_diagram.py
 ¦       generate_plotly_diagram.py
 ¦       run_document_formatter.bat
 ¦       update_filetree.bat
@@ -62,13 +58,6 @@ C:.
 +---src
 ¦   ¦   main.py
 ¦   ¦   
-¦   +---analysis
-¦   ¦       analysis.py
-¦   ¦       keyword_extraction.py
-¦   ¦       key_phrase_extraction.py
-¦   ¦       sentiment_analysis.py
-¦   ¦       __init__.py
-¦   ¦       
 ¦   +---config
 ¦   ¦   ¦   config.py
 ¦   ¦   ¦   __init__.py
@@ -90,19 +79,33 @@ C:.
 ¦   ¦           markdown_to_html.cpython-310.pyc
 ¦   ¦           __init__.cpython-310.pyc
 ¦   ¦           
+¦   +---samples
+¦   ¦   +---output
+¦   ¦   +---sample_jsons
+¦   ¦   ¦       taleo.json
+¦   ¦   ¦       
+¦   ¦   +---sample_resumes
+¦   ¦           md_test_9.md
+¦   ¦           
 ¦   +---utils
-¦       ¦   config_utils.py
-¦       ¦   file_utils.py
-¦       ¦   log_utils.py
-¦       ¦   __init__.py
-¦       ¦   
-¦       +---__pycache__
-¦               config_utils.cpython-310.pyc
-¦               file_utils.cpython-310.pyc
-¦               log_utils.cpython-310.pyc
-¦               utils.cpython-310.pyc
-¦               __init__.cpython-310.pyc
-¦               
+¦   ¦   ¦   config_utils.py
+¦   ¦   ¦   file_utils.py
+¦   ¦   ¦   log_utils.py
+¦   ¦   ¦   __init__.py
+¦   ¦   ¦   
+¦   ¦   +---output
+¦   ¦   ¦   +---docx
+¦   ¦   ¦   +---pdf
+¦   ¦   +---__pycache__
+¦   ¦           config_utils.cpython-310.pyc
+¦   ¦           file_utils.cpython-310.pyc
+¦   ¦           log_utils.cpython-310.pyc
+¦   ¦           utils.cpython-310.pyc
+¦   ¦           __init__.cpython-310.pyc
+¦   ¦           
+¦   +---__pycache__
+¦           main.cpython-310.pyc
+¦           
 +---tests
         test_build_docs.py
         test_docx_to_pdf.py
