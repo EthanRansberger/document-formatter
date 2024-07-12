@@ -6,9 +6,12 @@ from processing import markdown_to_html, html_to_docx, docx_to_pdf
 from config import load_formatting_config
 from utils.log_utils import init_logging, log_error
 
-def create_output_folders(docx_output_folder, pdf_output_folder):
+def create_output_folders(base_output_folder):
+    docx_output_folder = os.path.join(base_output_folder, "docx")
+    pdf_output_folder = os.path.join(base_output_folder, "pdf")
     os.makedirs(docx_output_folder, exist_ok=True)
     os.makedirs(pdf_output_folder, exist_ok=True)
+    return docx_output_folder, pdf_output_folder
 
 def select_files(file_types, title):
     root = tk.Tk()
@@ -33,10 +36,9 @@ def main():
         formatting_config_paths = select_files([("JSON files", "*.json")], "Select JSON Formatting Files")
 
         if markdown_paths and formatting_config_paths:
-            # Select output folders
-            docx_output_folder = select_folder("Select DOCX Output Folder")
-            pdf_output_folder = select_folder("Select PDF Output Folder")
-            create_output_folders(docx_output_folder, pdf_output_folder)
+            # Select base output folder
+            base_output_folder = select_folder("Select Base Output Folder")
+            docx_output_folder, pdf_output_folder = create_output_folders(base_output_folder)
 
             for markdown_path in markdown_paths:
                 with open(markdown_path, 'r', encoding='utf-8') as f:
