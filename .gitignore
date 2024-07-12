@@ -89,3 +89,10 @@ docs/_build/
 *.swo
 .DS_Store
 Thumbs.db
+
+# Log files
+*.log
+error.log
+
+# Ignore error logs in any directory
+**/error.log
