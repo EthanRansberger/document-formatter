@@ -2,6 +2,7 @@ name: Build Docs
 
 permissions:
   contents: write
+  actions: write
 
 on:
   push:
@@ -40,8 +41,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Create pre-release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: 'pre-release'
+          release_name: 'Pre-Release'
+          draft: false
+          prerelease: true
+
+      - name: Upload DOCX file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: path/to/generated/document.docx
+          asset_name: document.docx
+          asset_content_type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+      - name: Upload PDF file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: path/to/generated/document.pdf
+          asset_name: document.pdf
+          asset_content_type: application/pdf
+
       - name: Log success message
-        run: echo "Formatted documents generated and pushed successfully."
+        run: echo "Formatted documents generated, pushed, and uploaded to pre-release successfully."
 
       - name: Log error message on failure
         if: failure()
