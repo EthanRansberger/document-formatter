@@ -31,9 +31,10 @@ C:.
 ¦   ¦           diagram2.svg
 ¦   ¦           
 ¦   +---design
-¦           design_document.pdf
-¦           README.md
-¦           
+¦   ¦       design_document.pdf
+¦   ¦       README.md
+¦   ¦       
+¦   +---visualizations
 +---samples
 ¦   +---output
 ¦       +---docx
