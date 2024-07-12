@@ -1,32 +1,43 @@
 import os
 import sys
+import tkinter as tk
+from tkinter import filedialog
 from processing import markdown_to_html, html_to_docx, docx_to_pdf
 from config import load_formatting_config
 from utils.log_utils import init_logging, log_error
 
-def create_output_folders():
-    docx_output_folder = os.path.join("samples", "output", "docx")
-    pdf_output_folder = os.path.join("samples", "output", "pdf")
+def create_output_folders(docx_output_folder, pdf_output_folder):
     os.makedirs(docx_output_folder, exist_ok=True)
     os.makedirs(pdf_output_folder, exist_ok=True)
-    return docx_output_folder, pdf_output_folder
+
+def select_files(file_types, title):
+    root = tk.Tk()
+    root.withdraw()
+    files = filedialog.askopenfilenames(title=title, filetypes=file_types)
+    return root.tk.splitlist(files)
+
+def select_folder(title):
+    root = tk.Tk()
+    root.withdraw()
+    folder = filedialog.askdirectory(title=title)
+    return folder
 
 def main():
     try:
         log_file = init_logging()  # Initialize logging at the start of the script
 
-        # Automatically load all files from samples
-        samples_folder = os.path.join(os.path.dirname(__file__), "samples")
-        sample_jsons_folder = os.path.join(samples_folder, "sample_jsons")
-        sample_resumes_folder = os.path.join(samples_folder, "sample_resumes")
-        output_folder = os.path.join(samples_folder, "output")
-
-        # Collect all markdown and json files
-        markdown_paths = [os.path.join(sample_resumes_folder, f) for f in os.listdir(sample_resumes_folder) if f.endswith('.md')]
-        formatting_config_paths = [os.path.join(sample_jsons_folder, f) for f in os.listdir(sample_jsons_folder) if f.endswith('.json')]
+        # Select Markdown files
+        markdown_paths = select_files([("Markdown files", "*.md")], "Select Markdown Files")
+        
+        # Select JSON files
+        formatting_config_paths = select_files([("JSON files", "*.json")], "Select JSON Formatting Files")
 
         if markdown_paths and formatting_config_paths:
-            docx_output_folder, pdf_output_folder = create_output_folders()
+            # Select output folders
+            docx_output_folder = select_folder("Select DOCX Output Folder")
+            pdf_output_folder = select_folder("Select PDF Output Folder")
+            create_output_folders(docx_output_folder, pdf_output_folder)
+
             for markdown_path in markdown_paths:
                 with open(markdown_path, 'r', encoding='utf-8') as f:
                     markdown_text = f.read()
@@ -44,7 +55,7 @@ def main():
                     docx_to_pdf(docx_path, pdf_path)
                     print(f"PDF file saved to {pdf_path}")
         else:
-            print("No markdown or json files found in the samples folder.")
+            print("No markdown or json files selected.")
     except Exception as e:
         log_error(e)
         print(f"An error occurred: {e}")
