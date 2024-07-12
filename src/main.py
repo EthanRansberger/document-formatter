@@ -2,24 +2,25 @@ import os
 import sys
 from processing import markdown_to_html, html_to_docx, docx_to_pdf
 from config import load_formatting_config
-from utils import create_output_folders, select_files
+from utils import create_output_folders
 from utils.log_utils import init_logging, log_error
 
 def main():
     try:
         log_file = init_logging()  # Initialize logging at the start of the script
 
-        if len(sys.argv) > 1 and sys.argv[1] == '--ci':
-            # Running in a CI environment
-            formatting_config_paths = sys.argv[2].split(',')
-            markdown_paths = sys.argv[3].split(',')
-        else:
-            # Running interactively
-            formatting_config_paths = select_files("Select the JSON formatting configuration files", [("JSON files", "*.json")])
-            markdown_paths = select_files("Select the Markdown files", [("Markdown files", "*.md")])
+        # Automatically load all files from samples
+        samples_folder = os.path.join(os.path.dirname(__file__), "..", "samples")
+        sample_jsons_folder = os.path.join(samples_folder, "sample_jsons")
+        sample_resumes_folder = os.path.join(samples_folder, "sample_resumes")
+        output_folder = os.path.join(samples_folder, "output")
+
+        # Collect all markdown and json files
+        markdown_paths = [os.path.join(sample_resumes_folder, f) for f in os.listdir(sample_resumes_folder) if f.endswith('.md')]
+        formatting_config_paths = [os.path.join(sample_jsons_folder, f) for f in os.listdir(sample_jsons_folder) if f.endswith('.json')]
 
         if markdown_paths and formatting_config_paths:
-            docx_output_folder, pdf_output_folder = create_output_folders()
+            docx_output_folder, pdf_output_folder = create_output_folders(output_folder)
             for markdown_path in markdown_paths:
                 with open(markdown_path, 'r', encoding='utf-8') as f:
                     markdown_text = f.read()
@@ -37,7 +38,7 @@ def main():
                     docx_to_pdf(docx_path, pdf_path)
                     print(f"PDF file saved to {pdf_path}")
         else:
-            print("File selection cancelled.")
+            print("No markdown or json files found in the samples folder.")
     except Exception as e:
         log_error(e)
 

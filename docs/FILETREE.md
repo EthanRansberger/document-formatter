@@ -30,9 +30,20 @@ C:.
 ¦   ¦           diagram2.svg
 ¦   ¦           
 ¦   +---design
-¦           design_document.pdf
-¦           README.md
-¦           
+¦   ¦       design_document.pdf
+¦   ¦       README.md
+¦   ¦       
+¦   +---samples
+¦       +---output
+¦       +---sample_jsons
+¦       ¦       taleo.json
+¦       ¦       
+¦       +---sample_resumes
+¦               md_test_9.md
+¦               
++---logs
+¦       error.log
+¦       
 +---scripts
 ¦       generate_filetree_diagram.py
 ¦       generate_graphviz_diagram.py
@@ -74,6 +85,7 @@ C:.
 ¦   ¦   ¦   __init__.py
 ¦   ¦   ¦   
 ¦   ¦   +---__pycache__
+¦   ¦           docx_to_pdf.cpython-310.pyc
 ¦   ¦           html_to_docx.cpython-310.pyc
 ¦   ¦           markdown_to_html.cpython-310.pyc
 ¦   ¦           __init__.cpython-310.pyc
@@ -92,18 +104,11 @@ C:.
 ¦               __init__.cpython-310.pyc
 ¦               
 +---tests
-    ¦   test_docx_to_pdf.py
-    ¦   test_html_to_docx.py
-    ¦   test_markdown_to_formatted_docx.py
-    ¦   test_markdown_to_html.py
-    ¦   __init__.py
-    ¦   
-    +---samples
-        +---output
-        +---sample_jsons
-        ¦       taleo.json
-        ¦       
-        +---sample_resumes
-                md_test_9.md
-                
+        test_build_docs.py
+        test_docx_to_pdf.py
+        test_html_to_docx.py
+        test_markdown_to_formatted_docx.py
+        test_markdown_to_html.py
+        __init__.py
+        
 tree /F 
