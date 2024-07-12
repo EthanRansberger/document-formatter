@@ -34,12 +34,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Matplotlib Diagram
-        run: |
-          python scripts/generate_matplotlib_diagram.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Generate NetworkX Diagram
         run: |
           python scripts/generate_networkx_diagram.py
