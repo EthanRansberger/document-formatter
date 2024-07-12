@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from docx import Document
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from utils.config_utils import get_formatting_value, load_formatting_config
+from src.utils.config_utils import get_formatting_value, load_formatting_config
 
 def process_html_to_docx(soup, document, formatting):
     # Add title
