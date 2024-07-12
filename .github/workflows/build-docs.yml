@@ -29,21 +29,52 @@ jobs:
     - name: Archive docx files
       run: |
         cd src/samples/output
-        zip -r ../../../../docx_files.zip docx
+        zip -r docx_files.zip docx
 
     - name: Archive pdf files
       run: |
         cd src/samples/output
-        zip -r ../../../../pdf_files.zip pdf
+        zip -r pdf_files.zip pdf
 
-    - name: Upload docx files
+    - name: Upload docx artifact
       uses: actions/upload-artifact@v2
       with:
         name: docx-files
-        path: docx_files.zip
+        path: src/samples/output/docx_files.zip
 
-    - name: Upload pdf files
+    - name: Upload pdf artifact
       uses: actions/upload-artifact@v2
       with:
         name: pdf-files
-        path: pdf_files.zip
+        path: src/samples/output/pdf_files.zip
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: 'v1.0.0'
+        release_name: 'DOCX and PDF files release'
+        draft: false
+        prerelease: true
+
+    - name: Upload Release Asset - DOCX files
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: src/samples/output/docx_files.zip
+        asset_name: docx_files.zip
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset - PDF files
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: src/samples/output/pdf_files.zip
+        asset_name: pdf_files.zip
+        asset_content_type: application/zip
