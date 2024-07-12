@@ -10,3 +10,4 @@ pydot==1.4.2
 kaleido==0.2.1
 numpy<=2.0.0
 PyYAML
+jsonschema
