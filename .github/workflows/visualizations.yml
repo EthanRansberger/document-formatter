@@ -1,5 +1,8 @@
 name: Generate Visualizations
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -31,12 +34,6 @@ jobs:
       - name: Generate Filetree Diagram
         run: |
           python scripts/generate_filetree_diagram.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate NetworkX Diagram
-        run: |
-          python scripts/generate_networkx_diagram.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
