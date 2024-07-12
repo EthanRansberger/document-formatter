@@ -9,7 +9,7 @@ from src.processing.docx_to_pdf import docx_to_pdf
 class TestMarkdownToFormattedDocx(unittest.TestCase):
 
     def setUp(self):
-        self.sample_resumes_dir = 'sample_resumes'
+        self.sample_resumes_dir = 'sample_mds'
         self.sample_jsons_dir = 'sample_jsons'
         self.output_dir = 'output'
         self.docx_output_dir = os.path.join(self.output_dir, 'docx')
