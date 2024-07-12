@@ -21,16 +21,16 @@ jobs:
 
     - name: Run build_docs.py
       env:
-        MARKDOWN_FOLDER: 'samples/sample_resumes'
-        JSON_FOLDER: 'samples/sample_jsons'
-        OUTPUT_FOLDER: 'samples/output'
-      run: python build_docs.py
+        MARKDOWN_FOLDER: 'src/samples/sample_resumes'
+        JSON_FOLDER: 'src/samples/sample_jsons'
+        OUTPUT_FOLDER: 'src/samples/output'
+      run: python src/build_docs.py
 
     - name: Archive docx files
-      run: zip -r docx_files.zip samples/output/docx
+      run: zip -r docx_files.zip src/samples/output/docx
 
     - name: Archive pdf files
-      run: zip -r pdf_files.zip samples/output/pdf
+      run: zip -r pdf_files.zip src/samples/output/pdf
 
     - name: Upload docx files
       uses: actions/upload-artifact@v2
