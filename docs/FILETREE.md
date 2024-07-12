@@ -55,6 +55,7 @@ C:.
 ¦   +---_static
 ¦   +---_templates
 +---src
+¦   ¦   build_docs.py
 ¦   ¦   main.py
 ¦   ¦   
 ¦   +---config
