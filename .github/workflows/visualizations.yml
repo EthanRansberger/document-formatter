@@ -27,12 +27,14 @@ jobs:
 
       - name: Generate Plotly Diagram
         run: |
+          mkdir -p output
           python scripts/generate_plotly_diagram.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate Filetree Diagram
         run: |
+          mkdir -p output
           python scripts/generate_filetree_diagram.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,6 +44,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add docs/visualizations/*.png
+          git add output/*.png
           git commit -m "Add generated visualizations"
           git push
         env:
