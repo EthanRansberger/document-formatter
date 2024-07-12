@@ -45,24 +45,26 @@ jobs:
           release_name: 'Pre-Release'
           draft: false
           prerelease: true
-      - name: Upload DOCX file
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: path/to/generated/document.docx
-          asset_name: document.docx
-          asset_content_type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-      - name: Upload PDF file
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: path/to/generated/document.pdf
-          asset_name: document.pdf
-          asset_content_type: application/pdf
+      - name: Upload DOCX files
+        run: |
+          for file in samples/output/docx/*; do
+            echo "Uploading $file"
+            curl -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document" \
+              --data-binary @"$file" \
+              "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
+          done
+      - name: Upload PDF files
+        run: |
+          for file in samples/output/pdf/*; do
+            echo "Uploading $file"
+            curl -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: application/pdf" \
+              --data-binary @"$file" \
+              "${{ steps.create_release.outputs.upload_url }}?name=$(basename $file)"
+          done
       - name: Log success message
         run: echo "Formatted documents generated, pushed, and uploaded to pre-release successfully."
       - name: Log error message on failure
