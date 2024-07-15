@@ -52,12 +52,14 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        tag_name: 'v1.0.0'
-        release_name: 'DOCX and PDF files release'
+        tag_name: v1.0.0
+        release_name: Release v1.0.0
+        body: |
+          Initial release.
         draft: false
-        prerelease: true
+        prerelease: false
 
     - name: Upload Release Asset - DOCX files
       uses: actions/upload-release-asset@v1
