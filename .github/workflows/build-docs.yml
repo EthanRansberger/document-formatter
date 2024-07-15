@@ -58,12 +58,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0-alpha.1  # Replace with your pre-release tag name
-          release_name: Pre-release v1.0.0-alpha.1  # Replace with your pre-release name
+          tag_name: v1.0.0-alpha.1  # Update this for your pre-release version
+          release_name: Pre-release v1.0.0-alpha.1  # Update this for your pre-release version
           body: |
-            Pre-release version.
+            This is a pre-release of our project.
           draft: false
-          prerelease: true  # Set to true to create a pre-release
+          prerelease: true
 
       - name: Upload Release Asset - DOCX files
         uses: actions/upload-release-asset@v1
