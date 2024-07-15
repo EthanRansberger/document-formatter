@@ -52,18 +52,18 @@ jobs:
           name: pdf-files
           path: src/samples/output/pdf_files.zip
 
-      - name: Create Release
+      - name: Create Pre-release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0
-          release_name: Release v1.0.0
+          tag_name: v1.0.0-alpha.1  # Replace with your pre-release tag name
+          release_name: Pre-release v1.0.0-alpha.1  # Replace with your pre-release name
           body: |
-            Initial release.
+            Pre-release version.
           draft: false
-          prerelease: false
+          prerelease: true  # Set to true to create a pre-release
 
       - name: Upload Release Asset - DOCX files
         uses: actions/upload-release-asset@v1
