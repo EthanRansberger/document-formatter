@@ -52,7 +52,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
       with:
         tag_name: 'v1.0.0'
         release_name: 'DOCX and PDF files release'
@@ -62,7 +62,7 @@ jobs:
     - name: Upload Release Asset - DOCX files
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: src/samples/output/docx_files.zip
@@ -72,7 +72,7 @@ jobs:
     - name: Upload Release Asset - PDF files
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: src/samples/output/pdf_files.zip
